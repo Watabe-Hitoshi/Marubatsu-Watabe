@@ -7,15 +7,103 @@
 
 import SwiftUI
 
+// Quizの構造体
+struct Quiz: Identifiable, Codable {
+    var id = UUID() // それぞれの設問を区別するID
+    var question: String // 問題文
+    var answer: Bool // 解答
+}
 struct ContentView: View {
+    
+    // 問題
+    let quizExamples: [Quiz] = [
+        Quiz(question: "iPhoneアプリを開発する統合環境はZcodeである", answer: false),
+        Quiz(question: "Xcode画面の右側にはユーティリティーズがある", answer: true),
+        Quiz(question: "Textは文字列を表示する際に利用する", answer: true)
+    ]
+    
+    @State var currentQuestionNum: Int = 0 // 今、何問目の数字
+    @State var showingAlert = false // アラートの表示・非表示を管理
+    @State var alertTitle = "" // "正解" か "不正解" の文字を入れる用の変数
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        GeometryReader { geometry in
+            VStack {
+                Image(systemName: "globe")
+                    .imageScale(.large)
+                    .foregroundStyle(.tint)
+                Text(showQuestion()) // 問題文を表示
+                    .padding() // 余白の追加
+                    .frame(width: geometry.size.width * 0.85, alignment: .leading) // 横幅を親ビューの横幅の0.85倍、左寄せに
+                    .font(.system(size: 25)) // フォントサイズを25に
+                    .fontDesign(.rounded) // フォントを丸みのあるものに
+                    .background(.yellow) // 背景を黄色に
+                
+                Spacer() // 問題文とボタンの間を最大限広げるための余白を設置
+                
+                // ○×ボタンを横並びに表示するのでHStackを使う
+                HStack {
+                    // ○ボタン
+                    Button {
+                        checkAnswer(yourAnswer: true)
+                    } label: {
+                        Text("○") // ボタンの見た目
+                    }
+                    .frame(width: geometry.size.width * 0.4, height: geometry.size.width * 0.4) // 横幅と高さを親ビューの横幅の0.4倍を指定
+                    .font(.system(size: 100, weight: .bold)) // フォントサイズ: 100 ,太字
+                    .foregroundStyle(.white) // 文字の色: 白
+                    .background(.red) // 背景色: 赤
+                    
+                    // ×ボタン
+                    Button {
+                        checkAnswer(yourAnswer: false)
+                    } label: {
+                        Text("×") // ボタンの見た目
+                    }
+                    .frame(width: geometry.size.width * 0.4, height: geometry.size.width * 0.4) // 横幅と高さを親ビューの横幅の0.4倍を指定
+                    .font(.system(size: 100, weight: .bold)) // フォントサイズ: 100 ,太字
+                    .foregroundStyle(.white) // 文字の色: 白
+                    .background(.blue) // 背景色: 青
+                }
+            }
+            .padding()
+            // ズレを直すのに親ビューのサイズをこのVStackに適用
+            .frame(width: geometry.size.width, height: geometry.size.height)
+            
+            //回答時のアラート
+            .alert(alertTitle, isPresented: $showingAlert) {
+                Button("OK", role: .cancel) {/* 今回は処理なし */}
+            }
         }
-        .padding()
+    }
+    
+    // 問題を表示する関数
+    func showQuestion() -> String {
+        let question = quizExamples[currentQuestionNum].question
+        return question
+    }
+    
+    // 回答をチェックする関数
+    // 正解なら次の問題を表示します
+    func checkAnswer(yourAnswer: Bool) {
+        let quiz = quizExamples[currentQuestionNum]
+        let ans = quiz.answer
+        if yourAnswer == ans { // 正解のとき
+            alertTitle = "正解"
+            // 現在の問題番号が問題数を超えないように場合分け
+            if currentQuestionNum + 1 < quizExamples.count {
+                // currentQuestionNumを1足して次の問題に進む
+                currentQuestionNum += 1
+            } else {
+                // 超えるときは0に戻す
+                currentQuestionNum = 0
+            }
+        } else {
+            // 不正解のとき
+            alertTitle = "不正解"
+        }
+        // アラートを表示させる
+        showingAlert = true
     }
 }
 
