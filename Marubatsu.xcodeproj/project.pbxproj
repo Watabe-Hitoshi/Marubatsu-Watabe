@@ -6,8 +6,13 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		600A8DDE2D602603009D01A8 /* CreateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600A8DDD2D602603009D01A8 /* CreateView.swift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		600A8DCC2D600AC8009D01A8 /* Marubatsu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Marubatsu.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		600A8DDD2D602603009D01A8 /* CreateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -32,6 +37,7 @@
 		600A8DC32D600AC8009D01A8 = {
 			isa = PBXGroup;
 			children = (
+				600A8DDD2D602603009D01A8 /* CreateView.swift */,
 				600A8DCE2D600AC8009D01A8 /* Marubatsu */,
 				600A8DCD2D600AC8009D01A8 /* Products */,
 			);
@@ -119,6 +125,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				600A8DDE2D602603009D01A8 /* CreateView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
