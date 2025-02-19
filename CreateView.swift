@@ -55,8 +55,47 @@ struct CreateView: View {
             .foregroundStyle(.red)
             .padding()
         }
+        
+        List {
+            
+            // quizzesArrayの中身をリストに表示
+            ForEach(quizzesArray) { quiz in
+                HStack {
+                    Text("問題:\(quiz.question)")
+                    Text("解答:\(quiz.answer ? "○" : "×")")
+                }
+            }
+            // リストの並べ替え時の処理を設定
+            .onMove { from, to in
+                replaceRow(from, to)
+            }
+            .onDelete(perform: removeRow)
+        }
+        
+        // ナビゲーションバーに編集ボタンに追加
+        .toolbar(content: {
+            EditButton()
+        })
+        
+        .navigationTitle("Edit")
     }
     
+    // 並び替え処理と並び替え後の保存
+    func replaceRow(_ from: IndexSet, _ to: Int) {
+        var array = quizzesArray
+        quizzesArray.move(fromOffsets: from, toOffset: to) // 配列内での並び替え
+        if let encodedQuizzes = try? JSONEncoder().encode(array) {
+        
+        }
+    }
+    
+    func removeRow(offsets: IndexSet) {
+        var array = quizzesArray
+        array.remove(atOffsets: offsets)
+        if let encodedQuizzes = try? JSONEncoder().encode(array) {
+            
+        }
+    }
     // 問題追加(保存)の関数
     func addQuiz(question: String, answer: String) {
         // 問題文が入力されているかチェック
