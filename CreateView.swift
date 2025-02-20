@@ -62,6 +62,7 @@ struct CreateView: View {
             ForEach(quizzesArray) { quiz in
                 HStack {
                     Text("問題:\(quiz.question)")
+                    Spacer()
                     Text("解答:\(quiz.answer ? "○" : "×")")
                 }
             }
