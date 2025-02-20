@@ -87,7 +87,7 @@ struct ContentView: View {
                     ToolbarItem(placement: .topBarTrailing) {
                         NavigationLink {
                             // 遷移先の画面
-                            CreateView(quizzesArray: $quizzesArray)
+                            CreateView(quizzesArray: $quizzesArray, currentQuestionNum: $currentQuestionNum)
                                 .navigationTitle("問題を作ろう")
                         } label: {
                             // 画面に遷移するためのボタンの見た目

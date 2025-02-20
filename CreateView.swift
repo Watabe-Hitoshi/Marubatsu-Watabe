@@ -12,6 +12,7 @@ struct CreateView: View {
     @State private var questionText = "" // テキストフィールドの文字を受け取る
     @State private var selectedAnswer = "○" // ピッカーで選ばれた解答を受け取る
     let answers = ["○", "×"] // ピッカーの選択肢
+    @Binding var currentQuestionNum: Int // 回答画面で読み込んだ問題の配列番号を受け取る
     
     var body: some View {
         VStack {
@@ -84,9 +85,11 @@ struct CreateView: View {
     // 並び替え処理と並び替え後の保存
     func replaceRow(_ from: IndexSet, _ to: Int) {
         var array = quizzesArray
-        quizzesArray.move(fromOffsets: from, toOffset: to) // 配列内での並び替え
+        array.move(fromOffsets: from, toOffset: to) // 配列内での並び替え
         if let encodedQuizzes = try? JSONEncoder().encode(array) {
-        
+            UserDefaults.standard.setValue(encodedQuizzes, forKey: "quiz")
+            quizzesArray = array
+            currentQuestionNum = 0
         }
     }
     
@@ -94,7 +97,9 @@ struct CreateView: View {
         var array = quizzesArray
         array.remove(atOffsets: offsets)
         if let encodedQuizzes = try? JSONEncoder().encode(array) {
-            
+            UserDefaults.standard.setValue(encodedQuizzes, forKey: "quiz")
+            quizzesArray = array
+            currentQuestionNum = 0
         }
     }
     // 問題追加(保存)の関数
